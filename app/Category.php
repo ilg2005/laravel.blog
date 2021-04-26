@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use Sluggable;
+   use Sluggable;
+
+    protected $fillable = ['title'];
 
     public function posts()
     {
