@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Редактировать тег</h1>
+                    <h1>Редактирование статьи</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -25,11 +25,11 @@
                 <div class="col-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Тег "{{ $tag->title }}"</h3>
+                            <h3 class="card-title">Статья "{{ $post->title }}"</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form" method="post" action="{{ route('tags.update', ['tag' => $tag->id]) }}">
+                        <form role="form" method="post" action="{{ route('posts.update', ['post' => $post->id]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="card-body">
@@ -37,7 +37,41 @@
                                     <label for="title">Название</label>
                                     <input type="text" name="title"
                                            class="form-control @error('title') is-invalid @enderror" id="title"
-                                           value="{{ $tag->title }}">
+                                           value="{{ $post->title }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Описание</label>
+                                    <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="5" >{{ $post->description }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">Содержание</label>
+                                    <textarea id="content" name="content" class="form-control @error('content') is-invalid @enderror" rows="7">{{ $post->content }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category_id">Категория</label>
+                                    <select id="category_id" class="form-control @error('category_id') is-invalid @enderror" name="category_id">
+                                        @foreach($categories as $k => $v)
+                                            <option value="{{ $k }}" @if($k == $post->category_id) selected @endif>{{ $v }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tags">Теги</label>
+                                    <select id="tags" name="tags[]" class="select2" multiple="multiple" data-placeholder="Выберите тег" style="width: 100%;">
+                                        @foreach($tags as $k => $v)
+                                            <option value="{{ $k }}" @if(in_array($k, $post->tags->pluck('id')->all())) selected @endif>{{ $v }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="thumbnail">Изображение</label>
+                                    <div class="input-group mb-2">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail">
+                                            <label class="custom-file-label" for="thumbnail">Выбрать файл</label>
+                                        </div>
+                                    </div>
+                                    <div><img src="{{ $post->getImage() }}" alt="" width="200px" class="img-thumbnail"> </div>
                                 </div>
                             </div>
                             <!-- /.card-body -->
