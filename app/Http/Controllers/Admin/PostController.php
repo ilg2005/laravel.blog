@@ -44,9 +44,22 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'description' => 'required',
+            'content' => 'required',
+            'category_id' => 'required|integer',
+            'thumbnail' => 'nullable|image',
         ]);
-        Post::create($request->all());
-        return redirect('admin.posts.index')->with('success', 'Статья добавлена');
+        $data =$request->all();
+
+        if ($request->hasFile('thumbnail')) {
+           $folder = date('Y-m-d');
+                $data['thumbnail'] = $request->file('thumbnail')->store("images/{$folder}");
+        }
+
+        $post = Post::create($data);
+        $post->tags()->sync($request->tags);
+
+        return redirect()->route('posts.index')->with('success', 'Статья добавлена');
     }
 
     /**
@@ -84,7 +97,7 @@ class PostController extends Controller
             'title' => 'required',
         ]);
 
-        return redirect('posts.index')->with('success', 'Изменения сохранены');
+        return redirect()->route('posts.index')->with('success', 'Изменения сохранены');
     }
 
     /**
@@ -95,6 +108,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        return redirect('posts.index')->with('success', 'Статья удалена');
+        Post::destroy($id);
+        return redirect()->route('posts.index')->with('success', 'Статья удалена');
     }
 }

@@ -148,6 +148,8 @@ return [
 
     'attributes' => [
         'title' => 'Название',
+        'description' => 'Описание',
+        'content' => 'Содержание',
     ],
 
 ];

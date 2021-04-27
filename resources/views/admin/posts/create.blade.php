@@ -40,17 +40,15 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Описание</label>
-                                    <textarea id="description" name="description" class="form-control" rows="5"
-                                              placeholder="Введите описание ..."></textarea>
+                                    <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="5" placeholder="Введите описание ..."></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="content">Содержание</label>
-                                    <textarea id="content" name="content" class="form-control" rows="7"
-                                              placeholder="Введите текст ..."></textarea>
+                                    <textarea id="content" name="content" class="form-control @error('content') is-invalid @enderror" rows="7" placeholder="Введите текст ..."></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="category_id">Категория</label>
-                                    <select id="category_id" class="form-control" name="category_id">
+                                    <select id="category_id" class="form-control @error('category_id') is-invalid @enderror" name="category_id">
                                         @foreach($categories as $k => $v)
                                             <option value="{{ $k }}">{{ $v }}</option>
                                         @endforeach
