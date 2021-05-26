@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', 'PostController@index')->name('home');
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admin'], function () {
     Route::get('/', 'MainController@index')->name('admin.index');
@@ -33,3 +31,9 @@ Route::group(['middleware' => 'guest'], function () {
 
 
 Route::get('/logout', 'UserController@logout')->name('logout')->middleware('auth');
+
+
+Route::group(['middleware' => 'user'], function () {
+    Route::get('/post/index', 'PostController@index')->name('posts.index');
+    Route::get('/article', 'PostController@show')->name('posts.single');
+});
